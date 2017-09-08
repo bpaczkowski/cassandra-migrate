@@ -78,7 +78,7 @@ program
       .then(() => common.getMigrationSet('up', options.num))
       .then((migrationLists) => {
         let Up = require('./commands/up');
-        let up = new Up(db, migrationLists);
+        let up = new Up(db, migrationLists, program.migrationsDirectory);
         if (!options.skip) {
           console.log('processing migration lists');
           console.log(migrationLists);
@@ -114,7 +114,7 @@ program
       .then((migrationLists) => {
         console.log('processing migration lists');
         let Down = require('./commands/down');
-        let down = new Down(db, migrationLists);
+        let down = new Down(db, migrationLists, program.migrationsDirectory);
         if (!options.skip) {
           console.log('processing migration lists');
           console.log(migrationLists);

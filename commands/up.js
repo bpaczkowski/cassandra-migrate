@@ -4,12 +4,13 @@ var migration_settings = require('../scripts/migrationSettings.json');
 var path = require('path');
 
 class Up {
-  constructor(db, pendingMigrations) {
+  constructor(db, pendingMigrations, migrationsDirectory) {
     this.db = db;
     this.pending = pendingMigrations;
     this.keyList = Object.keys(pendingMigrations).sort(function (a, b) {
       return a - b;
     });
+    this.migrationsDirectory = migrationsDirectory;
   }
 
   runPending(skip) {
@@ -17,13 +18,19 @@ class Up {
       async.eachSeries(this.keyList, (id, callback) => {
         let fileName = this.pending[ id ];
         let attributes = fileName.split("_");
-
         let query = {
           'file_name': fileName,
           'migration_number': attributes[ 0 ],
           'title': fileName.replace(".js", ""),
-          'run': require(path.resolve(process.cwd() + "/" + fileName))
         };
+        let migrationsPath = process.cwd();
+
+        if (this.migrationsDirectory) {
+          migrationsPath = path.join(migrationsPath, this.migrationsDirectory);
+        }
+
+        query.run = require(path.join(migrationsPath, fileName));
+
         if (skip) {
           if (query.migration_number == skip) {
             console.log(`adding ${query.file_name} to Migration table, skipping migration`);
