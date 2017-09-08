@@ -42,7 +42,7 @@ class Up {
           }
         } else {
           this.run(query)
-            .then((query) => this.updateMigrationTable(query))
+            .then(() => this.updateMigrationTable(query))
             .then((result) => callback(null, result))
             .catch((error) => callback(error));
         }
