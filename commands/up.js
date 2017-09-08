@@ -55,13 +55,19 @@ class Up {
     return new Promise((resolve, reject) => {
       console.log(`Migrating changes: ${query.title}`);
       let db = this.db;
-      query.run.up(db, function (err) {
+      let result = query.run.up(db, function (err) {
         if (err) {
           reject(`Failed to run migration ${query.title}: ${err}`);
         } else {
           resolve(query);
         }
       });
+
+      if (result && typeof result.then === 'function' && typeof result.catch === 'function') {
+        result
+          .then(resolve)
+          .catch(reject);
+      }
     });
   }
 
