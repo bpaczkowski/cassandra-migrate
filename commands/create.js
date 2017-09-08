@@ -12,6 +12,7 @@ class Create {
   constructor(fs, path, templateFile, migrationsDirectory) {
     this.fs = fs;
     this.path = path;
+    this.migrationsDirectory = migrationsDirectory;
     this.dateString = Math.floor(Date.now() / 1000) + '';
 
     var template = `
@@ -46,7 +47,6 @@ module.exports = migration${this.dateString};`;
     }
 
     this.template = template;
-    this.migrationsDirectory = migrationsDirectory;
   }
 
   newMigration(title) {
@@ -59,10 +59,11 @@ module.exports = migration${this.dateString};`;
     var fileName = `${this.dateString}_${title}.js`;
 
     if (this.migrationsDirectory) {
-      fileName = this.path.join(this.migrationsDirectory, fileName);
+      this.fs.writeFileSync(this.path.join(process.cwd(), this.migrationsDirectory, fileName), this.template);
+    } else {
+      this.fs.writeFileSync(this.path.join(process.cwd(), fileName), this.template);
     }
 
-    this.fs.writeFileSync(`${process.cwd()}/${fileName}`, this.template);
     console.log(`Created a new migration file with name ${fileName}`);
   }
 }

@@ -33,8 +33,8 @@ var usage = [
 
 ].join('\n');
 
-var getMigrationsDirectory = function (options) {
-  return path.join(process.cwd(), options.migrationsDirectory);
+var getMigrationsDirectory = function () {
+  return path.join(process.cwd(), program.migrationsDirectory);
 };
 
 program.on('--help', function () {
@@ -59,7 +59,7 @@ program
   .option('-t, --template "<template>"', "sets the template for create")
   .action((title, options) => {
     let Create = require('./commands/create');
-    let create = new Create(fs, path, options.template, options.migrationsDirectory);
+    let create = new Create(fs, path, options.template, program.migrationsDirectory);
     create.newMigration(title);
     process.exit(0);
   });
@@ -73,7 +73,7 @@ program
     let db = new DB(program);
     let common = new Common(fs, db);
     common.createMigrationTable()
-      .then(common.getMigrationFiles(getMigrationsDirectory(options)))
+      .then(common.getMigrationFiles(getMigrationsDirectory()))
       .then(() => common.getMigrations())
       .then(() => common.getMigrationSet('up', options.num))
       .then((migrationLists) => {
@@ -108,7 +108,7 @@ program
     let db = new DB(program);
     let common = new Common(fs, db);
     common.createMigrationTable()
-      .then(common.getMigrationFiles(getMigrationsDirectory(options)))
+      .then(common.getMigrationFiles(getMigrationsDirectory()))
       .then(() => common.getMigrations())
       .then(() => common.getMigrationSet('down', options.num))
       .then((migrationLists) => {
