@@ -78,9 +78,9 @@ class Common {
               }
             } else {
               if(this.filesRan[ n ]){
-                reject(`migration number ${n} already ran`);
+                reject(Error(`migration number ${n} already ran`));
               }else {
-                reject(`migration number ${n} not found in pending migrations`);
+                reject(Error(`migration number ${n} not found in pending migrations`));
               }
             }
           }
@@ -95,15 +95,15 @@ class Common {
               }
             } else {
               if(this.filesAvail[ n ]){
-                reject(`migration number ${n} not run yet`);
+                reject(Error(`migration number ${n} not run yet`));
               }else {
-                reject(`migration number ${n} not found in pending rollbacks`);
+                reject(Error(`migration number ${n} not found in pending rollbacks`));
               }
             }
           }
         }
       } else {
-        reject('Migration direction must be specified')
+        reject(Error('Migration direction must be specified'))
       }
       resolve(pending);
     });

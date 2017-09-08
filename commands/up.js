@@ -49,7 +49,7 @@ class Up {
 
       }, (err) => {
         if (err) {
-          reject(`Error Running Migrations: ${err}`);
+          reject(err);
         } else {
           resolve('All Migrations Ran Successfully');
         }
@@ -64,7 +64,7 @@ class Up {
       let db = this.db;
       let result = query.run.up(db, function (err) {
         if (err) {
-          reject(`Failed to run migration ${query.title}: ${err}`);
+          reject(err);
         } else {
           resolve(query);
         }
@@ -85,7 +85,7 @@ class Up {
       query.created_at = Date.now();
       db.execute(migration_settings.insertMigration, query, { prepare: true }, function (err) {
         if (err) {
-          reject(`Failed to write migration to Migrations Table: ${query.title}: ${err}`);
+          reject(err);
         } else {
           resolve(`Successfully Migrated ${query.title}`);
         }

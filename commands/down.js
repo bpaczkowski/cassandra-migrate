@@ -46,7 +46,7 @@ class down {
         }
       }, (err) => {
         if (err) {
-          reject(`Error Rolling Back Migrations: ${err}`);
+          reject(err);
         } else {
           resolve('All Migrations Rolled Back Successfully');
         }

@@ -83,20 +83,19 @@ program
           console.log('processing migration lists');
           console.log(migrationLists);
         }
-        up.runPending(options.skip)
-          .then(result => {
-            console.log(result);
-            process.exit(0);
-          }, error => {
-            console.log(error);
-            process.exit(1);
-          });
-      })
-      .catch(error => {
-        console.log(error);
-        process.exit(1);
-      });
 
+        return up.runPending(options.skip);
+      })
+      .then(result => {
+        console.log(result);
+
+        process.exit(0);
+      })
+      .catch(err => {
+        console.log(err);
+
+        process.exit(-1);
+      });
   });
 
 program
@@ -119,18 +118,18 @@ program
           console.log('processing migration lists');
           console.log(migrationLists);
         }
-        down.runPending(options.skip)
-          .then(result => {
-            console.log(result);
-            process.exit(0);
-          }, error => {
-            console.log(error);
-            process.exit(1);
-          });
+
+        return down.runPending(options.skip);
       })
-      .catch(error => {
-        console.log(error);
-        process.exit(1);
+      .then(result => {
+        console.log(result);
+
+        process.exit(0);
+      })
+      .catch(err => {
+        console.log(err);
+
+        process.exit(-1);
       });
   });
 /*
