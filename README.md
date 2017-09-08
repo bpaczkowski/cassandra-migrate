@@ -80,6 +80,11 @@ As of 1.2.0 Cassandra connection details can now also be specified in configurat
   cassandra-migrate -o <path/to/file.js>
 ```
 
+As of 1.2.3 it is possible to pass migrations directory to use:
+```
+  cassandra-migrate -m <path/to/migrations/dir>
+```
+
 More help.
 
 ```
